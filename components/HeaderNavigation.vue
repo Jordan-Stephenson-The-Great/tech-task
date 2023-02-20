@@ -45,10 +45,10 @@ export default {
     SfList
   },
   setup() {
-    const { search, categories } = useCategory('menu-categories');
+    const { search, categories } = useCategory('corgi-sunglasses');
     const { isMobileMenuOpen, toggleMobileMenu } = useUiState();
     const { selectedLocale } = useLocale();
-
+    console.log(categories, selectedLocale, 'CURRENT CATEGORIES')
     onSSR(async () => {
       await search({ onlyParent: true });
     });

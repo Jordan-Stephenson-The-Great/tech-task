@@ -5,10 +5,10 @@
       :error='{ statusCode: 404 }'
     />
     <template v-else>
-      <SfBreadcrumbs
+      <!-- <SfBreadcrumbs
         class='breadcrumbs desktop-only'
         :breadcrumbs='breadcrumbs'
-      />
+      /> -->
       <div class='product'>
         <LazyHydrate when-idle>
           <SfGallery
@@ -268,10 +268,12 @@ export default defineComponent({
     const options = computed(() => productGetters.getAttributes(products.value, ['color', 'size']));
     const configuration = computed(() => productGetters.getAttributes(product.value, ['color', 'size']));
     const categories = computed(() => productGetters.getCategorySlugs(product.value));
+    console.log('do these categories work?', categories)
     const breadcrumbs = computed(() => productGetters.getBreadcrumbs(product.value)
       .map(breadcrumb => ({ ...breadcrumb, link: localePath(breadcrumb.link) }))
     );
 
+  console.log(product.value, 'PRODUCT VALUE>')
     const quantityInCart = computed(() => cartGetters.getItems(cart.value).find(cartItem => cartItem.productId === product.value?._id)?.quantity || 0);
     const selectedStore = computed(() => product.value?.availability?.channels?.results.find(result => result.channel.id === selectedChannel.value));
 

@@ -212,6 +212,7 @@ export default {
         ]
       ]
       : []),
+    '@vue-storefront/storyblok/nuxt',
     '@nuxtjs/i18n',
     'cookie-universal-nuxt',
     '@nuxt/image',

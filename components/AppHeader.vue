@@ -12,10 +12,10 @@
       <template #logo>
         <nuxt-link :to="localePath('/')" class="sf-header__logo">
           <nuxt-img
-            :src="'/icons/logo.svg' | addBasePathFilter"
+            :src="'/icons/corgi-2.svg' | addBasePathFilter"
             alt="Vue Storefront Next"
-            :width="32"
-            :height="32"
+            :width="75"
+            :height="75"
             class="sf-header__logo-image"
             loading="eager"
             provider="static"
@@ -49,6 +49,7 @@
             :aria-label="$t('Open store selector')"
             @click="toggleStoreLocatorModal"
           >
+          <h2></h2>
             <SfIcon class="sf-header__icon" icon="store" size="1.875rem" />
             <ClientSideOnly v-if="channel">
               <SfBadge class="sf-badge--number cart-badge" />
@@ -285,6 +286,9 @@ export default {
 <style lang="scss" scoped>
 .sf-header {
   --header-padding: var(--spacer-sm);
+  --header-background : #e1f4fe;
+
+
   z-index: 2;
   @include for-desktop {
     --header-padding: 0;
@@ -295,6 +299,7 @@ export default {
   &--has-mobile-navigation {
     z-index: 1;
   }
+
 }
 .header-on-top {
   z-index: 2;

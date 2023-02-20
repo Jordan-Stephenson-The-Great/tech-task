@@ -134,7 +134,7 @@ export default defineComponent({
     const { result, search } = useFacet('home');
     const { currency } = useCurrency();
     const products = computed(() => facetGetters.getProducts(result.value));
-
+console.log(products, 'WHAT WE GOT HERE?')
     const fetchProducts = async () => {
       await search({
         filters: {},
@@ -156,47 +156,47 @@ export default defineComponent({
 
     const mocks = {
       hero: {
-        title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2022',
+        title: 'Rain Coats',
+        subtitle: 'SPRING COLLECTION 2023',
         background: '#eceff1',
-        image: '/homepage/bannerH.webp'
+        image: 'https://i5.walmartimages.com/asr/4395a8b8-cc8e-4f74-a03f-8ac3b7d3405d.cfaee8bfab0731e60dda0cb83b27d074.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF'
       },
       banners: [
         {
           slot: 'banner-A',
-          subtitle: 'Dresses',
-          title: 'Cocktail & Party',
-          description: 'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          subtitle: 'Beat the Sun',
+          title: 'Sunglasses',
+          description: 'For short-legged breeds, sunglasses are a must have this season',
           buttonText: 'Shop now',
-          image: '/homepage/bannerF.webp',
+          image: 'https://i.ebayimg.com/images/g/F6sAAOSwxRlhRXrb/s-l1600.jpg',
           class: 'sf-banner--slim desktop-only',
-          link: '/c/women/women-clothing-skirts'
+          link: '/c/accessories/sunglasses'
         },
         {
           slot: 'banner-B',
-          subtitle: 'Dresses',
-          title: 'Linen Dresses',
-          description: 'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          subtitle: 'Hats',
+          title: 'Make sure your corgi friend has something to style that cute head',
+          description: 'Hats hats hats!',
           buttonText: 'Shop now',
-          image: '/homepage/bannerE.webp',
+          image: 'https://img.freepik.com/premium-photo/welsh-corgi-dog-straw-hats-sits-white-background_106368-4533.jpg?w=2000',
           class: 'sf-banner--slim banner-central desktop-only',
-          link: '/c/women/women-clothing-dresses'
+          link: '/c/accessories/hats'
         },
         {
           slot: 'banner-C',
-          subtitle: 'T-Shirts',
-          title: 'The Office Life',
-          image: '/homepage/bannerC.webp',
+          subtitle: 'Life Jackets',
+          title: 'The Lake Life',
+          image: 'https://i.insider.com/609be186ba78eb001906edd2?width=1300&format=jpeg&auto=webp',
           class: 'sf-banner--slim banner__tshirt',
-          link: '/c/women/women-clothing-shirts'
+          link: '/c/health/lifejacket'
         },
         {
           slot: 'banner-D',
-          subtitle: 'Summer Sandals',
-          title: 'Eco Sandals',
-          image: '/homepage/bannerG.webp',
+          subtitle: 'On the Go',
+          title: 'Carriers',
+          image: 'https://m.media-amazon.com/images/I/81x9gyFLXFL._AC_SL1500_.jpg',
           class: 'sf-banner--slim',
-          link: '/c/women/women-shoes-sandals'
+          link: '/c/accessories'
         }
       ]
     };
