@@ -89,18 +89,18 @@ Having said that, it is not mandatory to provide 100% coverage in the translatio
 
 **VSF + commercetools:**
 
-- [] Connected a new commercetools project to Vue Storefront
-- [] Created a category tree and displayed category links in the application's header
-- [] Added products and displayed them on Product Listing Pages
-- [] Ensured one can switch application's language and see localised product data
-- [] Ensured one can add a product to the cart
+- [x] Connected a new commercetools project to Vue Storefront
+- [x] Created a category tree and displayed category links in the application's header
+- [x] Added products and displayed them on Product Listing Pages
+- [x] Ensured one can switch application's language and see localised product data
+- [x] Ensured one can add a product to the cart
 - [] Ensured one can choose a shipping method during checkout
 
 **VSF + Storyblok:**
 
-- [] Created a trial space
-- [] Prepared the space by importing components from JSON schema
-- [] Configured Storyblok Bridge
+- [x] Created a trial space
+- [x] Prepared the space by importing components from JSON schema
+- [x] Configured Storyblok Bridge
 - [] Connected the Product Slider component to a Read-Only API Client of commercetools trial project
 - [] Built a custom homepage by adding a new story and using existing components provided by VSF
 - [] Added integration configuration on the Vue Storefront side

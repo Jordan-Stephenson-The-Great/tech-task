@@ -740,15 +740,15 @@
           "options": [
             {
               "name": "endpoint",
-              "value": "https://api.europe-west1.gcp.commercetools.com/vsf-ct-dev"
+              "value": "https://api.europe-west1.gcp.commercetools.com/vsfproject"
             },
             {
               "name": "clientId",
-              "value": "PIJ0YpRwOub6KYaS15Pmsvj6"
+              "value": "spWuZtm0rgAB_jYPLIQnf7YK"
             },
             {
               "name": "clientSecret",
-              "value": "RVgk3jZRp3WwiTk92COFlGm2FtNpgzTj"
+              "value": "xBc353q4Q2VL3QoWKZqV_6KAujnJLHpf"
             },
             {
               "name": "locale",

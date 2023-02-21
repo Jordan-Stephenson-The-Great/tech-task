@@ -8,20 +8,13 @@
         :background="mocks.hero.background"
         :image="mocks.hero.image | addBasePathFilter"
       />
-    </LazyHydrate>
 
+
+    </LazyHydrate>
+    <ProductSlider :items="items"/>
     <LazyHydrate when-visible>
       <SfBannerGrid :banner-grid="1" class="banner-grid">
-<      <!-- <Banner
-        :title="'YA'"
-        :subtitle="'WOOO'"
-        :description="'ffff'"
-        :button-text="'ee'"
-        :link="'www.google.com'"
-        :image="'image.ur'"
-        :background="'#fff'"
-      /> -->>
-      <template v-for="item in mocks.banners" v-slot:[item.slot]>
+        <template v-for="item in mocks.banners" v-slot:[item.slot]>
           <Banner
             :key="item.slot"
             :title="$t(item.title)"
@@ -29,7 +22,7 @@
             :description="$t(item.description)"
             :button-text="$t(item.buttonText)"
             :link="localePath(item.link)"
-            :image="{ url : item.image, alt: 'ya'}"
+            :image="{ url: item.image, alt: 'ya' }"
             :class="item.class"
             :height="200"
             :width="200"
@@ -126,7 +119,8 @@ import {
   SfButton,
 } from "@storefront-ui/vue";
 import Banner from "../components/cms/Banner.vue";
-import Home from "../components/cms/Home.vue"
+import Home from "../components/cms/Home.vue";
+import ProductSlider from "../components/cms/ProductSlider.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import {
   computed,
@@ -299,8 +293,9 @@ export default defineComponent({
     SfHeading,
     SfHero,
     SfProductCard,
+    ProductSlider,
     Banner,
-    Home
+    Home,
   },
 });
 </script>

@@ -1,6 +1,7 @@
 <template>
-  <SfCarousel v-if="list.length" class="product-carousel">
-    <SfCarouselItem v-for="(product, i) in list" :key="i">
+    <h2>ITS HERE MAN</h2>
+  <!-- <SfCarousel v-if="list.length" class="product-carousel"> -->
+    <!-- <SfCarouselItem v-for="(product, i) in list" :key="i">
       <SfProductCard
         class="product-card"
         data-cy="home-url_product"
@@ -37,8 +38,8 @@
         "
         :is-added-to-cart="isInCart({ product })"
       />
-    </SfCarouselItem>
-  </SfCarousel>
+    </SfCarouselItem> -->
+  <!-- </SfCarousel> -->
 </template>
 
 <script lang="ts">
@@ -53,6 +54,7 @@ import {
 } from '@vsf-enterprise/commercetools'
 import { computed } from '@nuxtjs/composition-api'
 import { onSSR } from '@vue-storefront/core';
+import { useContent } from '@vue-storefront/storyblok'
 
 export default Vue.extend({
   name: 'ProductSlider',
@@ -66,41 +68,46 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  setup({ items: { items } }: { items: { items: any[] } }) {
-    const ids = items.map((item) => item.id)
-    const { addItem: addItemToCart, isInCart } = useCart()
-    const {
-      addItem: addItemToWishlist,
-      isInWishlist,
-      removeItem,
-      wishlist,
-    } = useWishlist()
-    const { search, products } = useProduct(ids.join(''))
-
-    const masterProducts = computed(() =>
-      productGetters.getFiltered(products.value, { master: true }),
-    )
-
-    const removeItemFromWishlist = (productItem) => {
-      const wishlistItems = wishlistGetters.getItems(wishlist.value)
-      const product = wishlistItems.find(
-        (wishlistItem) => wishlistItem.variant.sku === productItem.sku,
-      )
-      removeItem({ product })
-    }
+  setup(items) {
+    // const ids = items.map((item) => item.id)
+    // const { addItem: addItemToCart, isInCart } = useCart()
+    // const {
+    //   addItem: addItemToWishlist,
+    //   isInWishlist,
+    //   removeItem,
+    //   wishlist,
+    // } = useWishlist()
+    // // const { search, products } = useProduct(ids.join(''))
+    const { search, content, loading, error } = useContent('unique-id')
 
     onSSR(async () => {
-      await search({ ids })
+      await search({ url: 'product-slideshow' })
     })
+    console.log(content, 'CONTENT?')
+    // const masterProducts = computed(() =>
+    //   productGetters.getFiltered(products.value, { master: true }),
+    // )
+
+    // const removeItemFromWishlist = (productItem) => {
+    //   const wishlistItems = wishlistGetters.getItems(wishlist.value)
+    //   const product = wishlistItems.find(
+    //     (wishlistItem) => wishlistItem.variant.sku === productItem.sku,
+    //   )
+    //   removeItem({ product })
+    // }
+
+    // onSSR(async () => {
+    //   await search({ ids })
+    // })
 
     return {
-      list: masterProducts,
-      productGetters,
-      addItemToCart,
-      isInCart,
-      addItemToWishlist,
-      removeItemFromWishlist,
-      isInWishlist,
+    //   list: masterProducts,
+    //   productGetters,
+    //   addItemToCart,
+    //   isInCart,
+    //   addItemToWishlist,
+    //   removeItemFromWishlist,
+    //   isInWishlist,
     }
   },
 })
