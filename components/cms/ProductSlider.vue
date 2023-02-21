@@ -1,7 +1,6 @@
 <template>
-    <h2>ITS HERE MAN</h2>
-  <!-- <SfCarousel v-if="list.length" class="product-carousel"> -->
-    <!-- <SfCarouselItem v-for="(product, i) in list" :key="i">
+  <SfCarousel v-if="list.length" class="product-carousel">
+    <SfCarouselItem v-for="(product, i) in list" :key="i">
       <SfProductCard
         class="product-card"
         data-cy="home-url_product"
@@ -10,9 +9,9 @@
         :regular-price="
           $n(
             productGetters.getFormattedPrice(
-              productGetters.getPrice(product).regular,
+              productGetters.getPrice(product).regular
             ),
-            'currency',
+            'currency'
           )
         "
         :special-price="
@@ -26,8 +25,8 @@
         :link="
           localePath(
             `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-              product,
-            )}`,
+              product
+            )}`
           )
         "
         @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
@@ -38,29 +37,34 @@
         "
         :is-added-to-cart="isInCart({ product })"
       />
-    </SfCarouselItem> -->
-  <!-- </SfCarousel> -->
+    </SfCarouselItem>
+    -->
+ </SfCarousel> 
+
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { SfCarousel, SfProductCard } from '@storefront-ui/vue'
+import Vue from "vue";
+import { SfCarousel, SfProductCard } from "@storefront-ui/vue";
 import {
   productGetters,
   useProduct,
   useCart,
   useWishlist,
   wishlistGetters,
-} from '@vsf-enterprise/commercetools'
-import { computed } from '@nuxtjs/composition-api'
-import { onSSR } from '@vue-storefront/core';
-import { useContent } from '@vue-storefront/storyblok'
+} from "@vsf-enterprise/commercetools";
+import { computed } from "@nuxtjs/composition-api";
+import { onSSR } from "@vue-storefront/core";
+import { useContent } from "@vue-storefront/storyblok";
 
+// path to the component that you've just copied
+import RenderContent from "./RenderContent.vue";
 export default Vue.extend({
-  name: 'ProductSlider',
+  name: "ProductSlider",
   components: {
     SfCarousel,
     SfProductCard,
+    RenderContent,
   },
   props: {
     items: {
@@ -68,47 +72,45 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  setup(items) {
-    // const ids = items.map((item) => item.id)
-    // const { addItem: addItemToCart, isInCart } = useCart()
-    // const {
-    //   addItem: addItemToWishlist,
-    //   isInWishlist,
-    //   removeItem,
-    //   wishlist,
-    // } = useWishlist()
-    // // const { search, products } = useProduct(ids.join(''))
-    const { search, content, loading, error } = useContent('unique-id')
+  setup({ items }){
+    const CMSitems = items._meta.content.body[0].items.items
+    const ids = CMSitems.map((item) => item.id);
+    const { addItem: addItemToCart, isInCart } = useCart();
+    const {
+      addItem: addItemToWishlist,
+      isInWishlist,
+      removeItem,
+      wishlist,
+    } = useWishlist();
+    const { search, products } = useProduct(ids.join(''))
+
+
+
+    const masterProducts = computed(() =>
+      productGetters.getFiltered(products.value, { master: true })
+    );
+
+    const removeItemFromWishlist = (productItem) => {
+      const wishlistItems = wishlistGetters.getItems(wishlist.value);
+      const product = wishlistItems.find(
+        (wishlistItem) => wishlistItem.variant.sku === productItem.sku
+      );
+      removeItem({ product });
+    };
 
     onSSR(async () => {
-      await search({ url: 'product-slideshow' })
-    })
-    console.log(content, 'CONTENT?')
-    // const masterProducts = computed(() =>
-    //   productGetters.getFiltered(products.value, { master: true }),
-    // )
-
-    // const removeItemFromWishlist = (productItem) => {
-    //   const wishlistItems = wishlistGetters.getItems(wishlist.value)
-    //   const product = wishlistItems.find(
-    //     (wishlistItem) => wishlistItem.variant.sku === productItem.sku,
-    //   )
-    //   removeItem({ product })
-    // }
-
-    // onSSR(async () => {
-    //   await search({ ids })
-    // })
+      await search({ ids });
+    });
 
     return {
-    //   list: masterProducts,
-    //   productGetters,
-    //   addItemToCart,
-    //   isInCart,
-    //   addItemToWishlist,
-    //   removeItemFromWishlist,
-    //   isInWishlist,
-    }
+      list: masterProducts,
+      productGetters,
+      addItemToCart,
+      isInCart,
+      addItemToWishlist,
+      removeItemFromWishlist,
+      isInWishlist,
+    };
   },
-})
+});
 </script>

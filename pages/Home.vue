@@ -11,7 +11,10 @@
 
 
     </LazyHydrate>
-    <ProductSlider :items="items"/>
+    <div v-if="content">
+      <ProductSlider :items="content"/>
+    </div>
+
     <LazyHydrate when-visible>
       <SfBannerGrid :banner-grid="1" class="banner-grid">
         <template v-for="item in mocks.banners" v-slot:[item.slot]>
@@ -119,8 +122,9 @@ import {
   SfButton,
 } from "@storefront-ui/vue";
 import Banner from "../components/cms/Banner.vue";
-import Home from "../components/cms/Home.vue";
 import ProductSlider from "../components/cms/ProductSlider.vue";
+import RenderContent from '../components/cms/RenderContent.vue'
+import Home from "../components/cms/Home.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import {
   computed,
@@ -139,6 +143,8 @@ import {
 import NewsletterModal from "~/components/NewsletterModal.vue";
 import { useUiState } from "~/composables";
 import ProductCard from "~/components/ProductCard";
+import { useContent } from '@vue-storefront/storyblok'
+
 
 export default defineComponent({
   name: "Home",
@@ -149,6 +155,8 @@ export default defineComponent({
     const { toggleNewsletterModal } = useUiState();
 
     const { result, search } = useFacet("home");
+    const searchCMS = useContent('unique-id').search
+    const { content, loading, error } = useContent('unique-id')
     const { currency } = useCurrency();
     const products = computed(() => facetGetters.getProducts(result.value));
     console.log(products, "WHAT WE GOT HERE?");
@@ -169,6 +177,7 @@ export default defineComponent({
 
     onSSR(async () => {
       await fetchProducts();
+      await searchCMS({ url: 'product-slideshow' })
     });
 
     const mocks = {
@@ -277,6 +286,7 @@ export default defineComponent({
       handleNewsletterClick,
       onSubscribe,
       productPriceTransform,
+      content
     };
   },
   head: {},
@@ -293,9 +303,11 @@ export default defineComponent({
     SfHeading,
     SfHero,
     SfProductCard,
+    RenderContent,
     ProductSlider,
     Banner,
     Home,
+    
   },
 });
 </script>
