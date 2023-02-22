@@ -46,13 +46,17 @@ export default {
     middleware: [],
     extendRoutes(routes, resolve) {
       routes.push(
+        //TODO: get routing working
+        {
+          name: 'home',
+          path: '/home-page',
+          component: resolve(__dirname, 'pages/Home.vue')
+        },
         {
           name: 'home',
           path: '/',
-          // redirect: "/",
           component: resolve(__dirname, 'pages/Home.vue')
         },
-
         {
           name: 'product',
           path: '/p/:slug/:sku/',

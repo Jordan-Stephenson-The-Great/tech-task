@@ -131,7 +131,7 @@ export default {
     const { availableLocales, defaultLocale, selectedLocale, changeLocale: changeLocaleComposable } = useLocale();
     const { result, search } = useFacet("home");
     const story = computed(() => content.value);
-    console.log(story, "story");
+
     const { currency } = useCurrency();
     const products = computed(() => facetGetters.getProducts(result.value));
     onMounted(() => {
@@ -154,7 +154,7 @@ export default {
 
     const searchCMS = useContent("unique-id").search;
     const { content, loading, error } = useContent("unique-id");
-    console.log(content, 'CONTENT?', selectedLocale)
+
     onSSR(async () => {
       await fetchProducts();
       await searchCMS({ url: "home-page", locale: selectedLocale.value });
@@ -215,7 +215,7 @@ export default {
       handleNewsletterClick,
       onSubscribe,
       productPriceTransform,
-      content,
+      content : story,
       loading,
       error,
     };
