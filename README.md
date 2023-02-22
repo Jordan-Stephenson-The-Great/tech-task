@@ -102,11 +102,11 @@ Having said that, it is not mandatory to provide 100% coverage in the translatio
 - [x] Prepared the space by importing components from JSON schema
 - [x] Configured Storyblok Bridge
 - [x] Connected the Product Slider component to a Read-Only API Client of commercetools trial project
-- [] Built a custom homepage by adding a new story and using existing components provided by VSF
+- [x] Built a custom homepage by adding a new story and using existing components provided by VSF
 - [x] Added integration configuration on the Vue Storefront side
 - [] Prepared the `_id.vue` component for displaying dynamic CMS content
 - [] Added a redirect onto the new homepage route
-- [] Customised the look & feel
-- [] Added Storyblok content localisation
+- [x] Customised the look & feel
+- [x] Added Storyblok content localisation
 
 **Good luck!**

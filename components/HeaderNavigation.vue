@@ -6,7 +6,7 @@
         :key="category.id"
         class="nav-item"
         v-e2e="`app-header-url_${category.slug}`"
-        :label="category.name"
+        :label="$t(category.name)"
         :link="localePath(`/c/${category.slug}`)"
       />
     </div>
@@ -48,7 +48,8 @@ export default {
     const { search, categories } = useCategory('corgi-accessories');
     const { isMobileMenuOpen, toggleMobileMenu } = useUiState();
     const { selectedLocale } = useLocale();
-    console.log(categories, selectedLocale, 'CURRENT CATEGORIES')
+    
+    console.log(selectedLocale, 'selectedLocale in Header')
     onSSR(async () => {
       await search({ onlyParent: true });
     });

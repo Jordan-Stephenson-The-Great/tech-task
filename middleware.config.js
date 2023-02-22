@@ -22,22 +22,24 @@ module.exports = {
           'manage_my_orders:vsfproject', 'view_categories:vsfproject', 'create_anonymous_token:vsfproject', 'view_published_products:vsfproject', 'manage_my_shopping_lists:vsfproject']
         },
         serverApi: {
-          clientId: 'HikgHmz6cRRrY3LJDwzdbwW_',
-          clientSecret: 'l8-57K9peOe6nqUR4P-3ZSiCU3ibwSGx',
-          scopes:['manage_customers:vsfproject', 'manage_products:vsfproject'],
+          clientId: '5lZueZzKKy-cknhYbmJ1Pkey',
+          clientSecret: 'GJjOy8uIGyIeT8buuohqeSFkIA3ymY1L',
+          scopes:['manage_customers:vsfproject', 'manage_products:vsfproject', 'view_project_settings:vsfproject'],
           operations: stringToArrayValue(process.env.VSF_SERVER_API_OPERATIONS),
         },
         acceptLanguage: [
           'en-US',
           'de-DE',
-          'pl-PL'
+          'de',
+          'en'
         ],
         currency: 'USD',
         country: 'US',
-        languageMap: {
-          'en-de': ['en-de', 'en-us'],
-          'en-us': ['en-us', 'en-de'],
-        }
+        // languageMap: {
+        //   'en-de': ['de-DE'],
+        //   'en-us': ['en-us'],
+        //   'de': ['de-DE', 'de'],
+        // }
       },
       customQueries: ctCustomQueries
     },

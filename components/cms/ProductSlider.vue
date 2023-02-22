@@ -9,9 +9,9 @@
         :regular-price="
           $n(
             productGetters.getFormattedPrice(
-              productGetters.getPrice(product).regular
+              productGetters.getPrice(product).regular,
             ),
-            'currency'
+            'currency',
           )
         "
         :special-price="
@@ -25,8 +25,8 @@
         :link="
           localePath(
             `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-              product
-            )}`
+              product,
+            )}`,
           )
         "
         @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
@@ -38,33 +38,26 @@
         :is-added-to-cart="isInCart({ product })"
       />
     </SfCarouselItem>
-    -->
- </SfCarousel> 
-
+  </SfCarousel>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { SfCarousel, SfProductCard } from "@storefront-ui/vue";
+import Vue from 'vue'
+import { SfCarousel, SfProductCard } from '@storefront-ui/vue'
 import {
   productGetters,
   useProduct,
   useCart,
   useWishlist,
   wishlistGetters,
-} from "@vsf-enterprise/commercetools";
-import { computed } from "@nuxtjs/composition-api";
-import { onSSR } from "@vue-storefront/core";
-import { useContent } from "@vue-storefront/storyblok";
-
-// path to the component that you've just copied
-import RenderContent from "./RenderContent.vue";
+} from '@vsf-enterprise/commercetools'
+import { computed } from '@nuxtjs/composition-api'
+import { onSSR } from '@vue-storefront/core';
 export default Vue.extend({
-  name: "ProductSlider",
+  name: 'ProductSlider',
   components: {
     SfCarousel,
     SfProductCard,
-    RenderContent,
   },
   props: {
     items: {
@@ -72,36 +65,29 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  setup({ items }){
-    const CMSitems = items._meta.content.body[0].items.items
-    const ids = CMSitems.map((item) => item.id);
-    const { addItem: addItemToCart, isInCart } = useCart();
+  setup({ items: { items } }: { items: { items: any[] } }) {
+    const ids = items.map((item) => item.id)
+    const { addItem: addItemToCart, isInCart } = useCart()
     const {
       addItem: addItemToWishlist,
       isInWishlist,
       removeItem,
       wishlist,
-    } = useWishlist();
+    } = useWishlist()
     const { search, products } = useProduct(ids.join(''))
-
-
-
     const masterProducts = computed(() =>
-      productGetters.getFiltered(products.value, { master: true })
-    );
-
+      productGetters.getFiltered(products.value, { master: true }),
+    )
     const removeItemFromWishlist = (productItem) => {
-      const wishlistItems = wishlistGetters.getItems(wishlist.value);
+      const wishlistItems = wishlistGetters.getItems(wishlist.value)
       const product = wishlistItems.find(
-        (wishlistItem) => wishlistItem.variant.sku === productItem.sku
-      );
-      removeItem({ product });
-    };
-
+        (wishlistItem) => wishlistItem.variant.sku === productItem.sku,
+      )
+      removeItem({ product })
+    }
     onSSR(async () => {
-      await search({ ids });
-    });
-
+      await search({ ids })
+    })
     return {
       list: masterProducts,
       productGetters,
@@ -110,7 +96,7 @@ export default Vue.extend({
       addItemToWishlist,
       removeItemFromWishlist,
       isInWishlist,
-    };
+    }
   },
-});
+})
 </script>

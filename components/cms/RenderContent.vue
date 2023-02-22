@@ -7,12 +7,19 @@
       :key="index"
       v-bind="component.props"
     />
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { extractComponents } from '@vue-storefront/storyblok'
+import Hero from '../cms/Hero.vue'
+import Heading from '../cms/Heading.vue'
+import Page from '../cms/Page.vue'
+import CallToAction from '../cms/CallToAction.vue'
+import Banner from '../cms/Banner.vue'
+import ProductSlider from '../cms/ProductSlider.vue'
 
 interface RenderContent {
   componentName: string
@@ -20,7 +27,7 @@ interface RenderContent {
 }
 
 export default Vue.extend({
-  name: 'RenderContent',
+  name: 'Page',
   props: {
     content: {
       type: Array,
@@ -30,6 +37,14 @@ export default Vue.extend({
     components(): RenderContent[] {
       return extractComponents(this.content)
     },
+  },
+  components: {
+    Page,
+    Hero,
+    Heading,
+    ProductSlider,
+    CallToAction,
+    Banner
   },
 })
 </script>

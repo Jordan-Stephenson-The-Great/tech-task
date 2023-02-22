@@ -1,6 +1,10 @@
 /* eslint-disable  */
 
 export default {
+  
+  Health: 'Gesundheit',
+  Clothing: 'Kleidung',
+  Accessories: 'Zubehör',
   Categories: 'Kategorien',
   Filters: 'Filters',
   'Sort by': 'Sortieren nach',

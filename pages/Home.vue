@@ -1,38 +1,15 @@
 <template>
   <div id="home">
-    <LazyHydrate when-idle>
-      <SfBanner
-        class="hero"
-        :title="$t(mocks.hero.title)"
-        :subtitle="$t(mocks.hero.subtitle)"
-        :background="mocks.hero.background"
-        :image="mocks.hero.image | addBasePathFilter"
-      />
 
-
-    </LazyHydrate>
-    <div v-if="content">
-      <ProductSlider :items="content"/>
+    <div>
+      <div v-if="loading">Loading content...</div>
+      <div v-else-if="error.search">Something is wrong!</div>
+      <div v-else-if="content">
+        <RenderContent :content="[content]"/>
+      </div>
     </div>
 
-    <LazyHydrate when-visible>
-      <SfBannerGrid :banner-grid="1" class="banner-grid">
-        <template v-for="item in mocks.banners" v-slot:[item.slot]>
-          <Banner
-            :key="item.slot"
-            :title="$t(item.title)"
-            :subtitle="$t(item.subtitle)"
-            :description="$t(item.description)"
-            :button-text="$t(item.buttonText)"
-            :link="localePath(item.link)"
-            :image="{ url: item.image, alt: 'ya' }"
-            :class="item.class"
-            :height="200"
-            :width="200"
-          />
-        </template>
-      </SfBannerGrid>
-    </LazyHydrate>
+
 
     <LazyHydrate when-visible>
       <div class="similar-products">
@@ -109,6 +86,7 @@
   </div>
 </template>
 
+
 <script>
 import {
   SfHero,
@@ -121,10 +99,7 @@ import {
   SfArrow,
   SfButton,
 } from "@storefront-ui/vue";
-import Banner from "../components/cms/Banner.vue";
-import ProductSlider from "../components/cms/ProductSlider.vue";
-import RenderContent from '../components/cms/RenderContent.vue'
-import Home from "../components/cms/Home.vue";
+import RenderContent from "../components/cms/RenderContent.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import {
   computed,
@@ -132,34 +107,36 @@ import {
   defineComponent,
   useContext,
   useMeta,
+  onMounted,
 } from "@nuxtjs/composition-api";
 import { onSSR } from "@vue-storefront/core";
 import {
   useFacet,
   useCurrency,
   facetGetters,
+  useLocale,
   productPriceTransform,
 } from "@vsf-enterprise/commercetools";
 import NewsletterModal from "~/components/NewsletterModal.vue";
 import { useUiState } from "~/composables";
 import ProductCard from "~/components/ProductCard";
-import { useContent } from '@vue-storefront/storyblok'
+import { useContent, storyblokBridge } from "@vue-storefront/storyblok";
 
-
-export default defineComponent({
-  name: "Home",
+export default {
   setup() {
     const {
       app: { i18n },
     } = useContext();
     const { toggleNewsletterModal } = useUiState();
-
+    const { availableLocales, defaultLocale, selectedLocale, changeLocale: changeLocaleComposable } = useLocale();
     const { result, search } = useFacet("home");
-    const searchCMS = useContent('unique-id').search
-    const { content, loading, error } = useContent('unique-id')
+    const story = computed(() => content.value);
+    console.log(story, "story");
     const { currency } = useCurrency();
     const products = computed(() => facetGetters.getProducts(result.value));
-    console.log(products, "WHAT WE GOT HERE?");
+    onMounted(() => {
+      storyblokBridge(story.value);
+    });
     const fetchProducts = async () => {
       await search({
         filters: {},
@@ -175,64 +152,17 @@ export default defineComponent({
       await fetchProducts();
     });
 
+    const searchCMS = useContent("unique-id").search;
+    const { content, loading, error } = useContent("unique-id");
+    console.log(content, 'CONTENT?', selectedLocale)
     onSSR(async () => {
       await fetchProducts();
-      await searchCMS({ url: 'product-slideshow' })
+      await searchCMS({ url: "home-page", locale: selectedLocale.value });
     });
 
-    const mocks = {
-      hero: {
-        title: "Rain Coats",
-        subtitle: "SPRING COLLECTION 2023",
-        background: "#eceff1",
-        image:
-          "https://i5.walmartimages.com/asr/4395a8b8-cc8e-4f74-a03f-8ac3b7d3405d.cfaee8bfab0731e60dda0cb83b27d074.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
-      },
-      banners: [
-        {
-          slot: "banner-A",
-          subtitle: "Beat the Sun",
-          title: "Sunglasses",
-          description:
-            "For short-legged breeds, sunglasses are a must have this season",
-          buttonText: "Shop now",
-          image: "https://i.ebayimg.com/images/g/F6sAAOSwxRlhRXrb/s-l1600.jpg",
-          class: "sf-banner--slim desktop-only",
-          link: "/c/accessories/sunglasses",
-        },
-        {
-          slot: "banner-B",
-          subtitle: "Hats",
-          title:
-            "Make sure your corgi friend has something to style that cute head",
-          description: "Hats hats hats!",
-          buttonText: "Shop now",
-          image:
-            "https://img.freepik.com/premium-photo/welsh-corgi-dog-straw-hats-sits-white-background_106368-4533.jpg?w=2000",
-          class: "sf-banner--slim banner-central desktop-only",
-          link: "/c/accessories/hats",
-        },
-        {
-          slot: "banner-C",
-          subtitle: "Life Jackets",
-          title: "The Lake Life",
-          image:
-            "https://i.insider.com/609be186ba78eb001906edd2?width=1300&format=jpeg&auto=webp",
-          class: "sf-banner--slim banner__tshirt",
-          link: "/c/health/lifejacket",
-        },
-        {
-          slot: "banner-D",
-          subtitle: "On the Go",
-          title: "Carriers",
-          image:
-            "https://m.media-amazon.com/images/I/81x9gyFLXFL._AC_SL1500_.jpg",
-          class: "sf-banner--slim",
-          link: "/c/accessories",
-        },
-      ],
-    };
-
+    watch(selectedLocale, async () => {
+      await searchCMS({ url: "home-page", locale: selectedLocale.value });
+    });
     const handleNewsletterClick = () => {
       toggleNewsletterModal();
     };
@@ -281,12 +211,13 @@ export default defineComponent({
     });
 
     return {
-      mocks,
       products,
       handleNewsletterClick,
       onSubscribe,
       productPriceTransform,
-      content
+      content,
+      loading,
+      error,
     };
   },
   head: {},
@@ -304,12 +235,8 @@ export default defineComponent({
     SfHero,
     SfProductCard,
     RenderContent,
-    ProductSlider,
-    Banner,
-    Home,
-    
   },
-});
+};
 </script>
 
 <style lang="scss">

@@ -49,8 +49,10 @@ export default {
         {
           name: 'home',
           path: '/',
+          // redirect: "/",
           component: resolve(__dirname, 'pages/Home.vue')
         },
+
         {
           name: 'product',
           path: '/p/:slug/:sku/',
@@ -202,6 +204,12 @@ export default {
       }]
   ],
   modules: [
+    [
+      "@vue-storefront/storyblok/nuxt",
+      {
+        "jsBridge": "https://app.storyblok.com/f/storyblok-v2-latest.js"
+      }
+    ],
     ...(process.env.CLICK_COLLECT_ENABLED
       ? [
         [
@@ -212,7 +220,6 @@ export default {
         ]
       ]
       : []),
-    '@vue-storefront/storyblok/nuxt',
     '@nuxtjs/i18n',
     'cookie-universal-nuxt',
     '@nuxt/image',
@@ -230,7 +237,8 @@ export default {
     ]
   ],
   plugins: [
-    '~/plugins/cms' ,
+    { src: '~/plugins/cms' },
+    // '~/plugins/cms' ,
     { src: '~/plugins/withCredentials.js' },
     { src: '~/plugins/filters.ts' },
     { src: '~/plugins/interceptors.js', mode: 'client' }
